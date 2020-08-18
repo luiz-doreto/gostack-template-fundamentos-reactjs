@@ -21,6 +21,20 @@ jest.mock('../utils/formatValue.ts', () => ({
   }),
 }));
 
+jest.mock('../utils/formatDate.ts', () => ({
+  __esModule: true,
+  default: jest.fn().mockImplementation((date: Date) => {
+    switch (date) {
+      case new Date('2020-04-17T19:05:34.000Z'):
+        return '04/17/2020';
+      case new Date('2020-04-18T19:05:34.000Z'):
+        return '04/18/2020';
+      default:
+        return '';
+    }
+  }),
+}));
+
 import React from 'react';
 import { render, fireEvent, act } from '@testing-library/react';
 import MockAdapter from 'axios-mock-adapter';
@@ -30,7 +44,7 @@ import App from '../App';
 const apiMock = new MockAdapter(api);
 
 const wait = (amount = 0): Promise<void> => {
-  return new Promise((resolve) => setTimeout(resolve, amount));
+  return new Promise(resolve => setTimeout(resolve, amount));
 };
 
 const actWait = async (amount = 0): Promise<void> => {
